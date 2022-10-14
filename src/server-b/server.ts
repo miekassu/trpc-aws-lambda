@@ -3,7 +3,7 @@ import { awsLambdaRequestHandler } from '@trpc/server/adapters/aws-lambda'
 import { sharedCreateContext } from '../shared-context/shared-context'
 import { z } from 'zod'
 
-export const server = router({
+export const routerB = router({
   greet: publicProcedure
     .input(z.object({ name: z.string() }))
     .query(({ input, ctx }) => {
@@ -12,6 +12,6 @@ export const server = router({
 })
 
 export const handler = awsLambdaRequestHandler({
-  router: server,
+  router: routerB,
   createContext: sharedCreateContext,
 })
