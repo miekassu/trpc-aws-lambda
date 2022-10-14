@@ -7,11 +7,13 @@ provider:
 
 functions:
   http-api:
-    handler: .build/src/server.handler
+    name: 'ServerA'
+    handler: .build/src/server-a/server.handler
     events:
       - httpApi: '*'
   rest-api:
-    handler: .build/src/server.handler
+    name: 'ServerB'
+    handler: .build/src/server-b/server.handler
     events:
       - http:
           path: /{proxy+}

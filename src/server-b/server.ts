@@ -1,0 +1,17 @@
+import { publicProcedure, router } from '../server-lib'
+import { awsLambdaRequestHandler } from '@trpc/server/adapters/aws-lambda'
+import { sharedCreateContext } from '../shared-context/shared-context'
+import { z } from 'zod'
+
+export const server = router({
+  greet: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .query(({ input, ctx }) => {
+      return `Greetings ${input.name} from serverB.`
+    }),
+})
+
+export const handler = awsLambdaRequestHandler({
+  router: server,
+  createContext: sharedCreateContext,
+})
