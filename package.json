@@ -23,7 +23,6 @@
   "scripts": {
     "build": "tsc",
     "start-server": "serverless offline --httpPort 4050",
-    "start-client": "tsx src/client.ts",
-    "http-rest-client": "tsx src/payloadFormatVersionClient.ts"
+    "start-client": "tsx src/client.ts"
   }
 }

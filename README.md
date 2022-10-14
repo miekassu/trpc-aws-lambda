@@ -1,16 +1,17 @@
 # serverless-offline + AWS Api Gateway Lambda
 
-For running locally, this project uses `serverless` to run a mocked API gateway locally, which is invoked through `start-server`. Start the server with `yarn start-server`
+This example is a service oriented example how to combine many tRPC- servers with one client.
 
-Run the client with `yarn start-client`
+Project uses `serverless` to run a API Gateway V1 (ServerA) and V2 (ServerB).
+Servers are combined and requests can be made using single tRPC-client.
 
 ## Run locally with serverless & serverless-offline
 
-`$ yarn install`
-`$ yarn build`
-`$ yarn start-server`
-`$ yarn start-client`
+`$ npm install`
+`$ npm run build`
+`$ npm run start-server`
+`$ npm run start-client`
 
 ## REST API & HTTP API
 
-Run the client with `yarn start-client`
+Run the client with `npm run start-client`
