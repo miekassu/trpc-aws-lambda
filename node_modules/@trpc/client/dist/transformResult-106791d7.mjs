@@ -1,0 +1,62 @@
+class TRPCClientError extends Error {
+    static from(cause, opts = {}) {
+        if (!(cause instanceof Error)) {
+            return new TRPCClientError(cause.error.message ?? '', {
+                ...opts,
+                cause: undefined,
+                result: cause
+            });
+        }
+        if (cause.name === 'TRPCClientError') {
+            return cause;
+        }
+        return new TRPCClientError(cause.message, {
+            ...opts,
+            cause,
+            result: null
+        });
+    }
+    constructor(message, opts){
+        const cause = opts?.cause;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore https://github.com/tc39/proposal-error-cause
+        super(message, {
+            cause
+        });
+        this.meta = opts?.meta;
+        this.cause = cause;
+        this.shape = opts?.result?.error;
+        this.data = opts?.result?.error.data;
+        this.name = 'TRPCClientError';
+        Object.setPrototypeOf(this, TRPCClientError.prototype);
+    }
+}
+
+// FIXME:
+// - the generics here are probably unnecessary
+// - the RPC-spec could probably be simplified to combine HTTP + WS
+/** @internal */ function transformResult(response, runtime) {
+    if ('error' in response) {
+        const error = runtime.transformer.deserialize(response.error);
+        return {
+            ok: false,
+            error: {
+                ...response,
+                error
+            }
+        };
+    }
+    const result = {
+        ...response.result,
+        ...(!response.result.type || response.result.type === 'data') && {
+            type: 'data',
+            data: runtime.transformer.deserialize(response.result.data)
+        }
+    };
+    return {
+        ok: true,
+        result
+    };
+}
+
+export { TRPCClientError as T, transformResult as t };
