@@ -1,4 +1,4 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { createTRPCProxyClient, httpLink } from '@trpc/client';
 import fetch from 'node-fetch';
 import { AppRouter } from './server-gateway'
 
@@ -12,8 +12,8 @@ const client = createTRPCProxyClient<AppRouter>({
     (runtime) => {
       // initialize the different links for different targets
       const servers = {
-        serverA: httpBatchLink({ url: 'http://127.0.0.1:4050' })(runtime),
-        serverB: httpBatchLink({ url: 'http://127.0.0.1:4050/dev' })(runtime),
+        serverA: httpLink({ url: 'http://127.0.0.1:4050' })(runtime),
+        serverB: httpLink({ url: 'http://127.0.0.1:4050/dev' })(runtime),
       };
       return (ctx) => {
         const { op } = ctx;
